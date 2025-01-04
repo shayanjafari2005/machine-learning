@@ -1,0 +1,126 @@
+from chefboost import Chefboost as chef
+import pandas as pd
+import csv
+
+df = pd.read_csv("weatherAUS.csv")
+config = {'algorithm': 'C4.5',}
+model = chef.fit(df.copy(), config)
+chef.save_model(model, "model.pkl")
+model = chef.load_model("model.pkl")
+currect=0
+incurrect=0
+naCount0=0
+naCount1=0
+naCount2=0
+naCount3=0
+naCount4=0
+naCount5=0
+naCount6=0
+naCount7=0
+naCount8=0
+naCount9=0
+naCount10=0
+naCount11=0
+naCount12=0
+naCount13=0
+naCount14=0
+naCount15=0
+naCount16=0
+naCount17=0
+index=0
+csvfiletest = open('test.csv')
+csvFileArray = []
+for row in csv.reader(csvfiletest, delimiter=','):
+    csvFileArray.append(row)
+
+csvfile = open('class.csv')
+csvclass = []
+for row in csv.reader(csvfile, delimiter=','):
+    csvclass.append(row[18])
+for row in csvFileArray:
+    # if(index>1039):
+    #     break
+    if(row[0]=='NA'):
+        naCount0=naCount0+1
+        row[0]=12.18
+    if(row[1]=='NA'):
+        naCount1=naCount1+1
+        row[1]=23.22
+    if(row[2]=='NA'):
+        naCount2=naCount2+1
+        row[2]=0
+    if(row[3]=='NA'):
+        naCount3=naCount3+1
+        row[3]='S'
+    if(row[4]=='NA'):
+        naCount4=naCount4+1
+        row[4]=39
+    if(row[5]=='NA'):
+        naCount5=naCount5+1
+        row[5]='SE'
+    if(row[6]=='NA'):
+        naCount6=naCount6+1
+        row[6]='SE'
+    if(row[7]=='NA'):
+        naCount7=naCount7+1
+        row[7]=14
+    if(row[8]=='NA'):
+        naCount8=naCount8+1
+        row[8]=18
+    if(row[9]=='NA'):
+        naCount9=naCount9+1
+        row[9]=68
+    if(row[10]=='NA'):
+        naCount10=naCount10+1
+        row[10]=51
+    if(row[11]=='NA'):
+        naCount11=naCount11+1
+        row[11]=1017.6
+    if(row[12]=='NA'):
+        naCount12=naCount12+1
+        row[12]=1015.2
+    if(row[13]=='NA'):
+        naCount13=naCount13+1
+        row[13]=2
+    if(row[14]=='NA'):
+        naCount14=naCount14+1
+        row[14]=2
+    if(row[15]=='NA'):
+        naCount15=naCount15+1
+        row[15]=21
+    if(row[16]=='NA'):
+        naCount16=naCount16+1
+        row[16]=21.68
+    if(row[17]=='NA'):
+        naCount17=naCount17+1
+        row[17]='No'
+    prediction = chef.predict(model, [float(row[0]), float(row[1]), float(row[2]), str(row[3]), int(row[4]), str(row[5]), str(row[6]), int(row[7]),
+                                    int(row[8]), int(row[9]), int(row[10]), float(row[11]), float(row[12]), int(row[13]), int(row[14]),float( row[15]), float(row[16]), str(row[17])])
+    if (str(prediction)==str(csvclass[index])):
+        currect=currect+1
+    if (str(prediction)!=str(csvclass[index])):
+        incurrect=incurrect+1
+    index=index+1
+print('Correct Answers : {}'.format(currect))
+print('Incorrect Answers : {}'.format(incurrect))
+print('Total Records : {}'.format(currect+incurrect))
+print('NA Vlues 0: {}'.format(naCount0))
+print('NA Vlues 1: {}'.format(naCount1))
+print('NA Vlues 2: {}'.format(naCount2))
+print('NA Vlues 3: {}'.format(naCount3))
+print('NA Vlues 4: {}'.format(naCount4))
+print('NA Vlues 5: {}'.format(naCount5))
+print('NA Vlues 6: {}'.format(naCount6))
+print('NA Vlues 7: {}'.format(naCount7))
+print('NA Vlues 8: {}'.format(naCount8))
+print('NA Vlues 9: {}'.format(naCount9))
+print('NA Vlues 10: {}'.format(naCount10))
+print('NA Vlues 11: {}'.format(naCount11))
+print('NA Vlues 12: {}'.format(naCount12))
+print('NA Vlues 13: {}'.format(naCount13))
+print('NA Vlues 14: {}'.format(naCount14))
+print('NA Vlues 15: {}'.format(naCount15))
+print('NA Vlues 16: {}'.format(naCount16))
+print('NA Vlues 17: {}'.format(naCount17))
+
+print('Accuracy: : {}%'.format(int((currect*100)/(currect+incurrect))))
